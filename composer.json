@@ -1,0 +1,13 @@
+{
+    "name": "musta/web250-mvc",
+    "description": "Introduction to MVC using composer",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alyssa"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
