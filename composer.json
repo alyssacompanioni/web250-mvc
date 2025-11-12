@@ -1,8 +1,13 @@
 {
-    "name": "musta/web250-mvc",
+    "name": "web250/mvc",
     "description": "Introduction to MVC using composer",
     "type": "project",
     "license": "MIT",
+    "autoload": {
+       "psr-4": {
+         "Web250\\Mvc\\": "src/" 
+        }
+      },
     "authors": [
         {
             "name": "Alyssa"

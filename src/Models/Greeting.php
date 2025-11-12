@@ -1,7 +1,7 @@
 <?php 
 declare(strict_types=1);
 
-namespace web250\mvc\Models;
+namespace Web250\Mvc\Models;
 
 class Greeting {
   public function hello(): string {

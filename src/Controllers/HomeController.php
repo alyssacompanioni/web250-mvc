@@ -1,9 +1,9 @@
 <?php 
 declare(strict_types=1);
 
-namespace web250\mvc\Controllers;
+namespace Web250\Mvc\Controllers;
 
-use web250\mvc\Models\Greeting;
+use Web250\Mvc\Models\Greeting;
 
 class HomeController
 {
