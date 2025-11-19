@@ -1,45 +1,72 @@
-<?php
+<?php 
 
-declare(strict_types=1);
+// src/Router.php
+//
+// The Router's job is to:
+//  1. Remember which URL paths map to which actions.
+//  2. When a request comes in, figure out which actions to run.
+//  3. Call the appropriate action.
+//
+// It uses "callbacks" (functions) that are saved and run later.
 
-namespace Web250\Mvc;
-
-/**
- * -----------------------------------------------------------------------------------
- * Tiny Router (Exact-Match Version)
- * -----------------------------------------------------------------------------
- * WHAT THIS DOES:
- *  Lets us register GET routes like $router->get('/', handler)
- *  Matches the current request path to a handler
- *  Calls the handler and echoes its return value
- * 
- * WHAT THIS DOES NOT:
- *  A full framework router (no middleware, no named routes, etc.)
- *  It only supports exact path matches for now (no /posts/{id} yet) * 
- */
-
-final class Router
+class Router
 {
+  /**
+   * @var array An array of routes, grouped by HTTP method (GET, POST, etc.).
+   *              Example:
+   *              [
+   *                'GET' => [
+   *                  '/' => (callable),
+   *                  '/salamanders' => (callable),
+   *                 ]
+   *              ]
+   */
   private array $routes = [];
 
-  /** Register a GET route */
+  /** 
+   * Register a route that responds to HTTP GET requests.
+   * 
+   * @param string    $path     The URL path (e.g "/salamanders").
+   * @param callable  $handler  A function to call when this path is requested.
+   */
   public function get(string $path, callable $handler): void 
   {
+    // A "callback" is just a function we save for later.
+    // We do NOT call it here; we simply remember it.
     $this->routes['GET'][$path] = $handler;
   }
 
-  public function dispatch(string $method, string $path): void 
+  /**
+   * Dispatch the current request:
+   *  - Check which path was requested.
+   *  - Look up the handler for that path.
+   *  - Run the handler (callback).
+   * 
+   * @param string $uriPath The path part of the URL (e.g. "/salamanders").
+   * @param string $method  The HTTP method (e.g. "GET").
+   */
+  public function dispatch(string $uriPath, string $method): void 
   {
-    $handler = $this->routes[$method][$path] ?? null;
+    // Remove trailing slash unless it's the root path. 
+    // Example: "/salamanders/" becomes "/salamanders".
+    $path = rtrim($uriPath, '/');
+    if ($path === '') {
+      $path = '/';
+    }
 
-    if(!$handler) {
-      http_response_code(404);
-      echo '<h1>404 Not Found</h1>';
-      // NOTE - the next 2 lines is supposed to be one line
-      echo '<p>No route registered for: ' . htmlspecialchars($path, ENT_QUOTES, 'UTF-8') . '</p>';
+    // Do we have a handler for the method and path?
+    if(isset($this->routes[$method][$path])) {
+      // Yes! Get the callback.
+      $handler = $this->routes[$method][$path];
+
+      //Call the callback function.
+      //This usually creates a controller and calls an action.
+      $handler();
       return;
     }
 
-    echo $handler();
+    // If we get here, no route matched.
+    http_response_code(404);
+    echo '</h1>404 - Page Not Found</h1>';
   }
 }
