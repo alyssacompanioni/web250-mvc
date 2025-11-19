@@ -10,6 +10,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Web250\Mvc\Router;
 use Web250\Mvc\Controllers\HomeController;
 
+//Create the Router and register routes
 $router = new Router();
 $router->get('/', fn() => (new HomeController())->index());
 $router->get('/home', fn() => (new HomeController())->index());
