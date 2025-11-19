@@ -31,4 +31,7 @@ $router->get('/', function () {
 
 // Figure out which path the user requested, ignoring the query string
 // Example: "/salamanders?page=2" becomes "/salamanders"
-$uriPath = parse_url($SERVER)
+$uriPath = parse_url($SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Ask the router to handle (dispatch) this request 
+$router->dispatch($uriPath, $_SERVER['REQUEST_METHOD']);
