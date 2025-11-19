@@ -1,31 +1,40 @@
 <?php
+
 declare(strict_types=1);
 
 ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/Router.php';
+require_once __DIR__ . '/../src/Controllers/SalamanderController.php';
 
-use Web250\Mvc\Router;
-use Web250\Mvc\Controllers\HomeController;
-
-//Create the Router and register routes
 $router = new Router();
-$router->get('/', fn() => (new HomeController())->index());
-$router->get('/home', fn() => (new HomeController())->index());
-$router->get('/about', fn() => '<h1>About</h1><p>This route is handled by a closure.</p>');
+$router->get('/', function () {
+    $controller = new SalamanderController();
+    $controller->index();
+});
 
-// --- NEW: compute path relative to /public ---
+$router->get('/salamanders', function () {
+    $controller = new SalamanderController();
+    $controller->index();
+});
+
+/**
+ * Normalize the path so routes like "/" and "/salamanders"
+ * work even when the app lives under a subfolder such as
+ * /web-250-mvc/public on localhost.
+ */
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-$uri    = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 
-// figure out the public folder’s web path (e.g. /web-250-mvc/public)
-$base   = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
+// Raw path the browser requested (no query string)
+$uriPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
 
-// strip the base from the URI so routes like "/" and "/about" work anywhere
-$path   = '/' . ltrim(preg_replace('#^' . preg_quote($base, '#') . '#', '', $uri), '/');
+// Web path to THIS script's directory, e.g. "/web-250-mvc/public"
+$base = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '')), '/');
+
+// Strip the base prefix so "/web-250-mvc/public/" becomes "/"
+$path = '/' . ltrim(preg_replace('#^' . preg_quote($base, '#') . '#', '', $uriPath), '/');
+
+// Normalize trailing double slashes -> "/"
 if ($path === '//') { $path = '/'; }
-
-// dispatch
-$router->dispatch($method, $path);
+$router->dispatch($path, $method);

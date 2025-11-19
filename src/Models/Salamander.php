@@ -5,7 +5,7 @@
 // The Model contains all the database logic for salamanders.
 // It knows HOW to get the data, but not how to display it.
 
-require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/../Database.php';
 
 class Salamander
 {
