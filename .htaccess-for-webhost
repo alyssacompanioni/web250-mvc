@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# If the request is exactly the folder /web250-mvc/, redirect to /web250-mvc/public/
+RewriteCond %{REQUEST_URI} ^/web250-mvc/?$
+RewriteRule ^ public/ [L,R=302]

@@ -1,0 +1,12 @@
+# Turn on rewriting at the domain root
+RewriteEngine On
+
+# If this is a real file or directory in public_html, serve it and stop
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Otherwise, pass the request into the app's public folder
+# This preserves the path, so /about → /web250-mvc/public/about
+RewriteRule ^(.*)$ web250-mvc/public/$1 [L]
+

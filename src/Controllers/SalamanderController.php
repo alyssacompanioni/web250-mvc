@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // src/Controllers/SalamanderController.php
 //
@@ -7,20 +7,19 @@
 
 require_once __DIR__ . '/../Models/Salamander.php';
 
-class SalamanderController 
+class SalamanderController
 {
-  /**
-   * Controller action to show a list of all salamanders.
-   */
+    /**
+     * Controller action to show a list of all salamanders.
+     */
+    public function index(): void
+    {
+        // 1. Ask the model for all salamanders
+        $salamanders = Salamander::all();
 
-  public function index(): void
-  {
-    //1. Ask th model for all salamanders
-    $salamanders = Salamander::all();
-
-    //2. Load the view and pass the data to it.
-    //   We do this by simply including the file. The view
-    //   can now use the $salamanders variable.
-    require __DIR__ . '/../Views/salamanders/index.php';
-  }
+        // 2. Load the view and pass the data to it.
+        //    We do this by simply including the file. The view
+        //    can now use the $salamanders variable.
+        require __DIR__ . '/../Views/salamanders/index.php';
+    }
 }

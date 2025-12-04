@@ -4,15 +4,12 @@
     "type": "project",
     "license": "MIT",
     "autoload": {
-       "psr-4": {
-         "Web250\\Mvc\\": "src/" 
+        "psr-4": {
+            "Web250\\Mvc\\": "src/"
         }
-      },
-    "authors": [
-        {
-            "name": "Alyssa"
-        }
-    ],
+    },
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
 }
